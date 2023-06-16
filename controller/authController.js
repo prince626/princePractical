@@ -49,7 +49,7 @@ export const loginController = async (req, res) => {
         const { email, password } = req.body;
 
         if (!email || !password) {
-            return res.status(401).send({
+            return res.status(400).send({
                 success: false,
                 message: 'Please fill in all fields'
             })
@@ -63,13 +63,13 @@ export const loginController = async (req, res) => {
         }
         const match = await comparePassword(password, user.password)
         if (!match) {
-            return res.status(403).send({
+            return res.status(406).send({
                 success: false,
                 message: "Invalid Password"
             })
         }
         const token = await JWT.sign({ _id: user._id }, process.env.SECRET_KEY, { expiresIn: '7d' })
-        res.status(200).send({
+        res.status(201).send({
             success: true,
             message: 'Login Successfullty',
             user: {
