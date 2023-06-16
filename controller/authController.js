@@ -8,6 +8,11 @@ const isValidEmail = (email) => {
     return emailRegex.test(email);
 };
 
+const isValidPhoneNumber = (phoneNumber) => {
+    const phoneRegex = /^[0-9]{10}$/;
+    return phoneRegex.test(phoneNumber);
+};
+
 export const registerController = async (req, res) => {
     try {
         const { name, email, password, phone, address, answer } = req.body;
@@ -19,6 +24,9 @@ export const registerController = async (req, res) => {
         }
         if (!isValidEmail(email)) {
             return res.send({ message: 'Invalid email format' });
+        }
+        if (!isValidPhoneNumber(phone)) {
+            return res.send({ message: 'Invalid phone number format' });
         }
         const checkuser = await userData.findOne({ email: email })
         if (checkuser) {
